@@ -1,0 +1,92 @@
+[
+    {
+      "id": 1,
+      "title": "Señuelo pacu",
+      "description": "De superficie",
+      "price": 25000,
+      "img": "Sin imagen",
+      "code": "SE01",
+      "stock": 35
+    },
+    {
+      "id": 2,
+      "title": "Señuelo mojarra",
+      "description": "De superficie",
+      "price": 27000,
+      "img": "Sin imagen",
+      "code": "SE02",
+      "stock": 87
+    },
+    {
+      "id": 3,
+      "title": "Señuelo alba",
+      "description": "De profundidad",
+      "price": 214000,
+      "img": "Sin imagen",
+      "code": "SE03",
+      "stock": 344
+    },
+    {
+      "id": 4,
+      "title": "Reel pocho",
+      "description": "Pesca pesada",
+      "price": 125000,
+      "img": "sin imagen",
+      "code": "RE01",
+      "stock": 65
+    },
+    {
+      "id": 5,
+      "title": "Reel camaron",
+      "description": "Pesca liviana",
+      "price": 116000,
+      "img": "sin imagen",
+      "code": "RE02",
+      "stock": 38
+    },
+    {
+      "id": 6,
+      "title": "Reel rollo",
+      "description": "Pesca ligera",
+      "price": 98000,
+      "img": "sin imagen",
+      "code": "RE03",
+      "stock": 41
+    },
+    {
+      "id": 7,
+      "title": "Reel mostri",
+      "description": "Pesca pesada",
+      "price": 125000,
+      "img": "sin imagen",
+      "code": "RE04",
+      "stock": 11
+    },
+    {
+      "id": 8,
+      "title": "Caña bamboo",
+      "description": "Lanzamiento largo",
+      "price": 86000,
+      "img": "sin imagen",
+      "code": "CA01",
+      "stock": 30
+    },
+    {
+      "id": 9,
+      "title": "Caña picana",
+      "description": "Lanzamiento corto",
+      "price": 71000,
+      "img": "sin imagen",
+      "code": "CA02",
+      "stock": 57
+    },
+    {
+      "id": 10,
+      "title": "Caña boguero",
+      "description": "Lanzamiento de costa",
+      "price": 28000,
+      "img": "sin imagen",
+      "code": "CA03",
+      "stock": 107
+    }
+  ]
