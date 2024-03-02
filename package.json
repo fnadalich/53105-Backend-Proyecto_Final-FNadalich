@@ -1,11 +1,11 @@
 {
-  "description": "Aplicacion de servidores con express",
-  "name": "desafio3-fnadalich",
+  "description": "Desafío 4",
+  "name": "desafio4-fnadalich",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev" : "nodemon src/app.js"
+    "dev": "nodemon src/app.js"
   },
   "author": "fnadalich",
   "license": "ISC",
@@ -13,6 +13,9 @@
     "nodemon": "^3.0.3"
   },
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "express-handlebars": "^7.1.2",
+    "multer": "^1.4.5-lts.1",
+    "socket.io": "^4.7.4"
   }
 }

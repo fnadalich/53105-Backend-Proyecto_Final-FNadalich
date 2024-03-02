@@ -1,0 +1,14 @@
+<div class="card">
+  {{#if thumbnail.length}}
+    {{#each thumbnail}}
+      <img src={{this}} alt={{title}}>
+    {{/each}}
+  {{else}}
+    <img src="https://elbloquear.vtexassets.com/arquivos/ids/161411-500-auto?v=637870993923300000&width=500&height=auto&aspect=true" alt="no image available">
+  {{/if}}
+  <h3>{{title}}</h3>
+  <p>Category: {{category}} </p>
+  <p>Price: ${{price}}</p>
+  <p>Description: {{description}} </p>
+  <p>ID: {{id}} </p>
+</div>
