@@ -1,80 +1,46 @@
-const socket = io()
+const socket = io(); 
+//Creamos una instancia de socket.io del lado del cliente. 
 
-const formNewProduct = document.getElementById("formNewProduct")
-const formDeleteProduct = document.getElementById("formDeleteProduct")
+//Vamos a guardar el nombre del usuario: 
+let user; 
 
-formNewProduct.addEventListener("submit", (e) => {
-  e.preventDefault()
+const chatBox = document.getElementById("chatBox"); 
 
-  let title = document.getElementById("title").value
-  let description = document.getElementById("description").value
-  let price = parseInt(document.getElementById("price").value)
-  let thumbnail = document.getElementById("thumbnail").value
-  let code = document.getElementById("code").value
-  let stock = document.getElementById("stock").value
-  let category = document.getElementById("category").value
+//Usamos el objeto Swal
+//El método es fire
 
-  const newProduct = {
-    title,
-    description,
-    price,
-    thumbnail,
-    code,
-    stock,
-    category
-  }
-
-  socket.emit("newProduct", newProduct)
-
-  formNewProduct.reset()
-
+Swal.fire({
+    title: "Identificate",
+    input: "text",
+    text: "Ingrese un usuario para identificarse en el chat",
+    inputValidator: (value) => {
+        return !value && "Necesitas escribir un nombre para continuar"
+    }, 
+    allowOutsideClick: false
+}).then(result => {
+    user = result.value;
+    console.log(user);
 })
 
-formDeleteProduct.addEventListener("submit", (e) => {
-  e.preventDefault()
 
-  let id = document.getElementById("id").value
-  socket.emit("deleteProduct", id)
-  formDeleteProduct.reset()
+chatBox.addEventListener("keyup", (event) => {
+    if(event.key === "Enter") {
+        if(chatBox.value.trim().length > 0 ){
+            //trim nos permite sacar los espacios en blanco al principio y al final de un string. 
+            //Si sacando los espacios en blanco, el mensaje tiene mas de 0 caracteres, lo enviamos al servidor.
+            socket.emit("message", {user:user, message: chatBox.value});
+            chatBox.value = "";
+        }
+    }
 })
 
-socket.on("products", (data) => {
-  const realTimeProducts = document.getElementById("realTimeProducts")
-  realTimeProducts.innerHTML = ""
-  data.forEach(prod => { 
-    let card = document.createElement("div")
+//Recibimos los mensajes así los mostramos por pantalla: 
 
-    card.className = "card"
-
-    const images = prod.thumbnail && prod.thumbnail.length > 0
-    ? prod.thumbnail.map(imgSrc => `<img src="${imgSrc}" alt="${prod.title}">`).join('')
-    : '<img src="https://elbloquear.vtexassets.com/arquivos/ids/161411-500-auto?v=637870993923300000&width=500&height=auto&aspect=true" alt="No Image">'
-
-    card.innerHTML = `
-      <div class="images" >
-        ${images}
-      </div>
-      <h3>${prod.title}</h3>
-      <p>Category: ${prod.category} </p>
-      <p>Price: $${prod.price}</p>
-      <p>Description: ${prod.description} </p>
-    `
-    realTimeProducts.appendChild(card)
-  })
-})
-
-socket.on("error", (data) => {
-  Swal.fire({
-    icon: "error",
-    title: "Oops...",
-    text: `${data}`
-  });
-})
-
-socket.on("success", (data) => {
-  Swal.fire({
-    title: "Good job!",
-    text: `${data.message}`,
-    icon: "success"
-  })
+socket.on("message", (data) => {
+    let log = document.getElementById("messagesLogs");
+    let mensajes = "";
+    data.forEach(mensaje => {
+        mensajes = mensajes + `${mensaje.user} dice: ${mensaje.message} <br>`;
+    })
+    log.innerHTML = mensajes;
 })

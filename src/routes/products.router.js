@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const ProductManager = require("../controllers/ProductManager.js")
-const newProductManager = new ProductManager("./src/models/products.json")
+const newProductManager = new ProductManager()
 
 router.get("/", async (req, res) => {
   const products = await newProductManager.getProducts()
@@ -28,7 +28,7 @@ router.post("/", async (req, res) => {
   const newProduct = req.body
   try {
     await newProductManager.addProduct(newProduct)
-    res.send({status: "success", message: "Correctly aggregated product"})
+    res.send({status: "success", message: "Product added succesfully"})
   } catch (error) {
     if (error.message === "Product already exists") {
       res.status(409).json({ error: `${error.message}` })

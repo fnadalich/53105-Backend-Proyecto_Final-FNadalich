@@ -2,7 +2,11 @@ const express = require("express")
 const router = express.Router()
 const { newProductManager } = require("./products.router.js")
 
-router.get("/", async (req, res) => {
+  router.get("/", async (req, res) => {
+    res.render("chat")
+    })
+
+router.get("/products", async (req, res) => {
   try {
     const products = await newProductManager.getProducts()
     let limit = parseInt(req.query.limit)

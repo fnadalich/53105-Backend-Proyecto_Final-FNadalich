@@ -1,14 +1,15 @@
 // Desafío 4 Backend
 
-const express = require("express")
-const exphbs = require("express-handlebars")
-const socket = require("socket.io")
-const { router: productsRouter, newProductManager } = require("./routes/products.router.js")
-const { router: cartsRouter } = require("./routes/carts.router.js")
-const viewsRouter = require("./routes/views.router.js")
+const express = require("express");
+const exphbs = require("express-handlebars");
+const socket = require("socket.io");
+const { router: productsRouter, newProductManager } = require("./routes/products.router.js");
+const { router: cartsRouter } = require("./routes/carts.router.js");
+const viewsRouter = require("./routes/views.router.js");
 
-const app = express()
-const PORT = 8080
+const app = express();
+const PORT = 8080;
+require("./database.js");
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -24,36 +25,18 @@ app.use("/", viewsRouter)
 
 const httpServer = app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`))
 
-const io = socket(httpServer)
+const MessageModel = require("./models/message.model.js")
+
+const io = new socket.Server(httpServer);
 
 io.on("connection", (socket) => {
+  console.log("A client connected");
 
-  console.log("Connected client")
-  
-  socket.on("newProduct", async (data) => {
-    try {
-      await newProductManager.addProduct(data)
-      socket.emit("success", {message: "Correctly aggregated product"})
-      const products = await newProductManager.getProducts()
-      socket.emit("products", products)
-    } catch (error) {
-      socket.emit("error", error.message)
-    }
+  socket.on("message", async (data) => {
+
+    await MessageModel.create(data);
+
+    const messages = await MessageModel.find();
+    io.sockets.emit("message", messages)
   })
-
-  socket.on("deleteProduct", async (data) => {
-    try {
-      await newProductManager.deleteProduct(data)
-      socket.emit("success", {message: `Product with id: ${data} correctly deleted`})
-      const products = await newProductManager.getProducts()
-      socket.emit("products", products)
-    } catch (error) {
-      socket.emit("error", error.message)
-    }
-  })
-
-  socket.on("disconnect", () => {
-    console.log("Diconnected client");
-  });
 })
-
