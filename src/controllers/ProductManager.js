@@ -1,102 +1,81 @@
-const ProductModel = require("../models/product.model.js");
-
+const ProductModel = require("../models/product.model.js")
 
 class ProductManager {
 
-  async addProduct({ title, description, price, img, code, stock, category, thumbnail }) {
+  async addProduct({title, description, price, thumbnail, code, stock, category, status}) {
     try {
-
+      const productExists = await ProductModel.findOne({code: code})
+      if (productExists) {
+        throw new Error("Product already exists")
+      }
       if (!title || !description || !price || !code || !stock || !category) {
-        console.log("All fields are required");
-        return;
+        throw new Error("Product missing fields")
       }
-
-      const productExist = await ProductModel.findOne({ code: code })
-      if (productExist) {
-        console.log("The code almost exists")
-        return;
-      }
-
-      const newProduct = new ProductModel(
-        {
+      const newProduct = new ProductModel({
         title,
         description,
         price,
-        img,
+        thumbnail: thumbnail || [],
         code,
         stock,
         category,
-        status: true,
-        thumbnail: thumbnail || []
-      });
-
-      await newProduct.save();
-
+        status: status === false ? false : true
+      })
+      
+      await newProduct.save()
     } catch (error) {
-      console.log("Error adding product", error);
-      throw error;
+      throw error
     }
   }
-  async getProducts() {
+
+  async getProducts(limit = 10, query, sort, page = 1 ) {
     try {
-      const products = await ProductModel.find();
-      return products;
+      const options = {
+        page: parseInt(page),
+        limit: parseInt(limit),
+        sort
+      }
+      const queryOption = query ? {category : query} : {} 
+      const products = await ProductModel.paginate( queryOption , options )
+      return products
     } catch (error) {
-      console.log("Error getting products", error);
-      throw error;
+      throw error      
     }
   }
 
   async getProductById(id) {
     try {
-      const product = await ProductModel.findById(id);
+      const product = await ProductModel.findById(id)
       if (!product) {
-        console.log("Product not found");
-        return null;
-      } else {
-        console.log("Product found");
-        return product;
+        throw new Error({ status:"error", message:`Product with Id: ${id} not found`})
       }
+      return product
     } catch (error) {
-      console.log("Error finding product by id", error);
-      throw error;
+      throw error
     }
   }
 
-  async updateProduct(id, productoActualizado) {
+  async updateProduct(id, updatedProduct) {
     try {
-      const upDateProduct = await ProductModel.findByIdAndUpdate(id, productoActualizado);
-
-      if (!upDateProduct) {
-        console.log("Product not found");
-        return null;
-      } else {
-        console.log("Product updated");
-        return upDateProductproduct;
+      const updateProduct = await ProductModel.findByIdAndUpdate(id, updatedProduct)
+      if (!updateProduct) {
+        throw new Error(`Product with Id: ${id} not found`)
       }
-
     } catch (error) {
-      console.log("Error updating the product", error);
-      throw error;
+      throw error
     }
   }
 
   async deleteProduct(id) {
     try {
-      const deleteProduct = await ProductModel.findByIdAndDelete(id);
-
-      if (!deleteProduct) {
-        console.log("Product not found");
-        return null;
+      const productToDelete = await ProductModel.findByIdAndDelete(id)
+      if (!productToDelete) {
+        throw new Error(`Product with id ${id} not found`);
       }
-      console.log("Product deleted");
-
     } catch (error) {
-      console.log("Error deleting the product", error);
-      throw error;
+      throw error
     }
   }
 }
-
 
 module.exports = ProductManager

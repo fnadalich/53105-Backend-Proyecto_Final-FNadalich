@@ -1,42 +1,29 @@
-// Desafío 4 Backend
+const express = require("express")
+const exphbs = require("express-handlebars")
+const io = require("./sockets.js")
+require("./database.js")
+const mainRoutes = require("./routes/main.routes.js")
 
-const express = require("express");
-const exphbs = require("express-handlebars");
-const socket = require("socket.io");
-const { router: productsRouter, newProductManager } = require("./routes/products.router.js");
-const { router: cartsRouter } = require("./routes/carts.router.js");
-const viewsRouter = require("./routes/views.router.js");
+const app = express()
+const PORT = 8080
 
-const app = express();
-const PORT = 8080;
-require("./database.js");
-
-app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(express.static("./src/public"))
+app.use(express.json())
+app.use('*/css',express.static('src/public/css'));
+app.use('*/js',express.static('src/public/js'))
 
-app.engine("handlebars", exphbs.engine())
+
+app.engine("handlebars", exphbs.engine({
+  runtimeOptions: {
+    allowProtoPropertiesByDefault: true,
+    allowProtoMethodsByDefault: true,
+  }
+}))
 app.set("view engine", "handlebars")
 app.set("views", "./src/views")
 
-app.use("/api/products", productsRouter)
-app.use("/api/carts", cartsRouter)
-app.use("/", viewsRouter)
+mainRoutes(app)
 
 const httpServer = app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`))
 
-const MessageModel = require("./models/message.model.js")
-
-const io = new socket.Server(httpServer);
-
-io.on("connection", (socket) => {
-  console.log("A client connected");
-
-  socket.on("message", async (data) => {
-
-    await MessageModel.create(data);
-
-    const messages = await MessageModel.find();
-    io.sockets.emit("message", messages)
-  })
-})
+io(httpServer)
