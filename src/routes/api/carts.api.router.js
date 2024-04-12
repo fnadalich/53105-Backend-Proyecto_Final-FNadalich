@@ -31,7 +31,7 @@ router.post("/:cid/product/:pid", async (req, res) => {
       return res.status(404).json({status:"error", message: `${existingProduct.message}` });
     }
     await newCartManager.addProduct(cid, pid)
-    res.json({ status: "success", message: "Correctly aggregated cart" })
+    res.json({ status: "success", message: "Cart created successfully" })
   } catch (error) {
     res.status(404).json({ error: `${error.message}` })
   }

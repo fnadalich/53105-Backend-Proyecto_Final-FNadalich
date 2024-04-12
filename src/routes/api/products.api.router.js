@@ -27,7 +27,7 @@ router.post("/", async (req, res) => {
   const newProduct = req.body
   try {
     await newProductManager.addProduct(newProduct)
-    res.send({status: "success", message: "Correctly aggregated product"})
+    res.send({status: "success", message: "Product created successfully"})
   } catch (error) {
     if (error.message === "Product already exists") {
       res.status(409).json({ error: `${error.message}` })

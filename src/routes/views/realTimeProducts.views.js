@@ -1,10 +1,29 @@
 const express = require("express")
 const router = express.Router()
-const { newProductManager } = require("../api/products.api.router.js")
 
-router.get("/", async (req, res) => {
-  const products = await newProductManager.getProducts()
-  res.render("realTimeProducts", { products: products.docs })
+router.get("/register", (req, res) => {
+  res.render("register")
+})
+
+router.get("/login", async (req, res) => {
+  if (req.session.login) {
+    return res.redirect("/products")
+  }
+  res.render("login")
+})
+
+router.get("/logout", (req, res) => {
+  if(req.session.login) {
+      req.session.destroy();
+  }
+  res.redirect("/products");
+})
+
+router.get("/profile", (req, res) => {
+  if (req.session.login) {
+    return res.render("profile", {user: req.session.user})
+  }
+  res.redirect("/user/login")
 })
 
 module.exports = router

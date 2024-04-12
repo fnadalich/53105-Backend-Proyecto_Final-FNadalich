@@ -234,3 +234,45 @@
   .detail button {
     width: 100%;
   }
+  
+  .login {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+  }
+  
+  .login a {
+    border-bottom: 1px solid;
+    padding: 0 0.5rem;
+    margin: 0.3rem;
+  }
+  
+  .loginForm, .registerForm, .userProfile {
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    margin: 10rem auto;
+    gap: 0.3rem;
+    padding: 3rem;
+    box-shadow: 0 0 1rem rgb(212, 212, 212);
+  }
+  
+  .loginForm a, .loginForm p, .registerForm a, .registerForm p {
+    align-self: center;
+  }
+  
+  .loginForm a, .registerForm a {
+    border-bottom: 1px solid;
+    padding: 0 0.5rem;
+  }
+  
+  .userInfo {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    text-align: right;
+  }
+  
+  .userProfile {
+    text-align: center;
+  }
