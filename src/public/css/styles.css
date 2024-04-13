@@ -276,3 +276,17 @@
   .userProfile {
     text-align: center;
   }
+  
+.failed {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 30%;
+  margin: 0 auto;
+  gap: 1.5rem;
+}
+
+.failed p {
+  font-size: 2rem;
+}

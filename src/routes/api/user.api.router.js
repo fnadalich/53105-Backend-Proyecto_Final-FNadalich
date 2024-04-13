@@ -1,83 +1,73 @@
-const express = require ("express");
-const router = express.Router(); 
-const UserModel = require("../../models/user.model.js"); //corrección de tutor, agrego ../ para que funione
+const express = require("express")
+const router = express.Router()
+const UserModel = require("../../models/user.model.js")
+const passport = require("passport")
+    
 
-//Registro: 
-const isAdmin =  (req, res, next) => {
-    const { email } = req.body
-      if (email && email.endsWith("admin@coder.com")) {
-        req.role = "admin"
-      }
-      next()
+router.post("/register",
+  passport.authenticate("register", {
+    failureRedirect: "/user/failedregister"
+  }),
+  async (req, res) => {
+
+    if (!req.user) return res.status(400).send("Invalid credentials")
+
+    const { first_name, last_name, email, role } = req.user
+
+    req.session.user = {
+      email,
+      name: `${first_name} ${last_name}`,
+      role
     }
-  
-router.post("/register", isAdmin, async (req, res) => {
-    const {first_name, last_name, email, password, age} = req.body; 
+    req.session.login = true
 
-    try {
-        const existUser = await UserModel.findOne({email:email});
-        if(existUser) {
-            return res.status(400).send("The email address is already registered");
-        }
-        //Creamos un nuevo user: 
-        const newUser = await UserModel.create({first_name, last_name, email, password, age, role: req.role});
+    res.redirect("/user/profile")
+  })
 
-        //Armamos la session: 
-        req.session.login = true;
-        req.session.user = {...newUser._doc}
-        res.redirect("/products");
 
-    } catch (error) {
-        res.status(500).send("Internal server error")
+router.post("/login",
+  passport.authenticate("login", {
+    failureRedirect: "/user/failedlogin"
+  }),
+  async (req, res) => {
+
+    if (!req.user) return res.status(400).send("Invalid credentials")
+
+    const { first_name, last_name, email, role } = req.user
+
+    req.session.user = {
+      email,
+      name: `${first_name} ${last_name}`,
+      role
     }
-})
+    req.session.login = true
 
-//Login: 
+    res.redirect("/user/profile")
+  })
 
-router.post("/login", async (req, res) => {
-    const {email, password} = req.body;
 
-    try { 
-        if (email === "admin@coder.com" && password === "admin1234") {
-        req.session.login = true
-        req.session.user = {
-          email,
-          role: "admin"
-        }
-        return res.redirect("/products")
-      }
-        const user = await UserModel.findOne({email:email}); 
-        if(user) {
-            if(user.password === password) {
-                req.session.login = true;
-                req.session.user = {
-                    email: user.email,
-                    name: `${user.first_name} ${user.last_name}`,
-                    age: user.age,
-                    role: user.role
-                  }
-                res.redirect("/products");
-            } else {
-                res.status(401).send("Not valid password.");
-            }
 
-        } else {
-            res.status(404).send("Not found user.");
-        }
-        
-    } catch (error) {
-        res.status(500).send("Internal server error")
-    }
-
-})
-
-//Logout
 
 router.get("/logout", (req, res) => {
-    if(req.session.login) {
-        req.session.destroy();
-    }
-    res.redirect("/user/login");
+  if (req.session.login) {
+    req.session.destroy()
+  }
+  res.redirect("/user/login")
 })
 
-module.exports = {router}
+router.get("/github", passport.authenticate("loginGithub", {scope: ["user:email"]}), async (req, res) => {})
+
+router.get("/githubcallback", passport.authenticate("loginGithub", {failureRedirect:"/user/login"}), async (req, res) => {
+
+    req.session.user = {
+      email: req.user.email,
+      name: `${req.user.first_name} ${req.user.last_name}`,
+      role: req.user.role
+    }
+    req.session.login = true
+
+    res.redirect("/user/profile")
+})
+
+
+module.exports = router

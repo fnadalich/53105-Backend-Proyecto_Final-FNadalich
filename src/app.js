@@ -4,6 +4,8 @@ const io = require("./sockets.js")
 require("./database.js")
 const mainRoutes = require("./routes/main.routes.js")
 const mainSession = require("./session.js")
+const passport = require("passport")
+const initializePassport = require("./config/passport.config.js")
 
 const app = express()
 const PORT = 8080
@@ -26,6 +28,10 @@ app.set("views", "./src/views")
 
 mainSession(app)
 mainRoutes(app)
+
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
 
 const httpServer = app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`))
 

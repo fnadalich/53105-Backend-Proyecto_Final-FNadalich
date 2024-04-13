@@ -8,7 +8,7 @@ const userViewsRouter = require("./views/user.views.router.js")
 
 const { router: productsApiRouter } = require("./api/products.api.router.js")
 const { router: cartsApiRouter } = require("./api/carts.api.router.js")
-const { router: userApiRouter} = require("./api/user.api.router.js")
+const userApiRouter = require("./api/user.api.router.js")
 
 const routes = (app) => {
   app.use("/api/products", productsApiRouter)
