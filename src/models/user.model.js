@@ -1,4 +1,4 @@
-const mongoose = require ("mongoose");
+const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
     first_name: {
@@ -8,13 +8,13 @@ const userSchema = new mongoose.Schema({
     last_name: {
         type: String,
         required: true
-    } , 
+    },
     email: {
         type: String,
-        required: true, 
+        required: true,
         index: true,
         unique: true
-    }, 
+    },
     password: {
         type: String,
         required: true
@@ -26,7 +26,11 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         default: "user"
-      }      
+    },
+    cartId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "carts"
+    }
 })
 
 const UserModel = mongoose.model("user", userSchema);

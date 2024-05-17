@@ -27,7 +27,7 @@ app.set("view engine", "handlebars")
 app.set("views", "./src/views")
 
 mainSession(app)
-mainRoutes(app)
+mainRoutes (app)
 
 initializePassport()
 app.use(passport.initialize())
