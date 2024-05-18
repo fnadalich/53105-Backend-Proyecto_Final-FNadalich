@@ -1,7 +1,7 @@
 {{> navBar}}
 
-<h1>CART</h1>
-<h3 class="cartId">ID: {{cid}}</h3>
+<h1>Cart</h1>
+<h3 class="cartId" >ID: <span id="cartId">{{cid}}</span></h3>
 
 <h2 class="cartProductsTitle">Products</h2>
 
@@ -12,6 +12,11 @@
 </div>
 
 <h4 id="total"></h4>
+
+<form action="/api/carts/{{cid}}/purchase" method="POST" >
+
+<button type="submit">Finalizar Compra</button>
+</form>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="js/cart.js"></script>

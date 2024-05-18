@@ -1,11 +1,11 @@
 const cards = document.querySelectorAll('.cardCart')
 let total = 0
-const cid = "65ff33826a6a680e86458716"
+const cid = document.getElementById("cartId").innerHTML
 
 cards.forEach(card => {
   const price = parseInt(card.querySelector(".price").innerHTML)
   const quantity = card.querySelector(".quantity")
-      const subTotal = card.querySelector(".subTotal")
+  const subTotal = card.querySelector(".subTotal")
   const dlt = card.querySelector(".delete")
   const _id = card.id
 
