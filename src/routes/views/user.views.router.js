@@ -1,22 +1,11 @@
 const express = require("express")
-const router = express.Router(); 
+const router = express.Router()
+const ViewController = require("../../controllers/view.controller.js")
+const viewController = new ViewController
 
-router.get("/register", (req, res) => {
-    if(req.session.login) {
-        return res.redirect("/profile");
-    }
-    res.render("register");
-})
 
-router.get("/login", (req, res) => {
-    res.render("login");
-})
-
-router.get("/profile", (req, res) => {
-    if(!req.session.login){
-        return res.redirect("/login");
-    }
-    res.render("profile", {user: req.session.user})
-})
+router.get("/register", viewController.userRegister)
+router.get("/login", viewController.userLogin)
+router.get("/profile", viewController.userProfile)
 
 module.exports = router

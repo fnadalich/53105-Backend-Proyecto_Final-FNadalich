@@ -290,3 +290,6 @@
 .failed p {
   font-size: 2rem;
 }
+#cid {
+  display: none;
+}
