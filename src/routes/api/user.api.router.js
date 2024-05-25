@@ -4,6 +4,7 @@ const passport = require("passport")
 const UserController = require("../../controllers/user.controller.js")
 const userController = new UserController
 
+
 router.post("/register", userController.createUser)
 router.post("/login", userController.userValidPassword)
 router.get("/logout", userController.logout)

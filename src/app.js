@@ -17,6 +17,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use('*/css', express.static('src/public/css'))
 app.use('*/js', express.static('src/public/js'))
+app.use(manejadorError);
 
 app.engine("handlebars", exphbs.engine({
   runtimeOptions: {
