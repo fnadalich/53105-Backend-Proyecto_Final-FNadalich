@@ -300,3 +300,7 @@
   align-items: center;
   
 }
+
+.userProfile button {
+  width: 100%;
+}

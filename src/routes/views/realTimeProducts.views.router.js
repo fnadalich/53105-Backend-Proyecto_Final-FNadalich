@@ -1,29 +1,9 @@
 const express = require("express")
 const router = express.Router()
+const ViewController = require("../../controllers/view.controller.js")
+const viewController = new ViewController
+const checkUserRole = require("../../middleware/checkRole.js")
 
-router.get("/register", (req, res) => {
-  res.render("register")
-})
-
-router.get("/login", async (req, res) => {
-  if (req.session.login) {
-    return res.redirect("/products")
-  }
-  res.render("login")
-})
-
-router.get("/logout", (req, res) => {
-  if(req.session.login) {
-      req.session.destroy();
-  }
-  res.redirect("/products");
-})
-
-router.get("/profile", (req, res) => {
-  if (req.session.login) {
-    return res.render("profile", {user: req.session.user})
-  }
-  res.redirect("/user/login")
-})
+router.get("/",checkUserRole(["admin", "premium"]), viewController.realTimeProducts)
 
 module.exports = router

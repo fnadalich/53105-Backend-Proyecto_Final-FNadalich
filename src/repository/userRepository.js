@@ -21,7 +21,8 @@ class UserRepository {
         email: user.email,
         password: createHash(user.password),
         age: user.age,
-        cartId: newCart._id
+        cartId: newCart._id,
+        role: user.role
       })
 
       newUser.save()
@@ -69,6 +70,17 @@ class UserRepository {
         throw new Error(`User not exist`)
       }
       return user
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async changeRole(uid, newRole) {
+    try {
+      const user = await UserModel.findByIdAndUpdate(uid, { role: newRole }, { new: true })
+      if (!user) {
+        throw new Error("The role could not be changed.")
+      }
     } catch (error) {
       throw error
     }

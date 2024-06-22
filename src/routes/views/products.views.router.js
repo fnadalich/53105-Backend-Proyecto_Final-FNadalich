@@ -4,6 +4,6 @@ const ViewController = require("../../controllers/view.controller.js")
 const viewController = new ViewController
 const checkUserRole = require("../../middleware/checkRole.js")
 
-router.get("/",checkUserRole(["admin"]), viewController.realTimeProducts)
+router.get("/",checkUserRole(["user", "premium"]), viewController.products)
 
 module.exports = router

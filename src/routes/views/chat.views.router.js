@@ -1,10 +1,9 @@
 const express = require("express")
 const router = express.Router()
-const MessageModel = require("../../models/message.model.js")
+const ViewController = require("../../controllers/view.controller.js")
+const viewController = new ViewController
+const checkUserRole = require("../../middleware/checkRole.js")
 
-router.get("/", async (req, res) => {
-  const messages = await MessageModel.find()
-  res.render("chat", { messages: messages })
-})
+router.get("/",checkUserRole(["user", "premium"]), viewController.chat)
 
 module.exports = router
