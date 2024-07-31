@@ -5,7 +5,7 @@ const swaggerOptions = {
         openapi: "3.0.1",
         info: {
             title: "Swagger Documentation for E-Commerce",
-            description: "App dedicated to sale fishong products.",
+            description: "App dedicated to sale fishing products.",
         }
     },
     apis: ["./src/docs/**/*.yaml"]

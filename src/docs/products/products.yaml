@@ -202,4 +202,3 @@ components:
         owner:
           type: string
           default: admin
-        

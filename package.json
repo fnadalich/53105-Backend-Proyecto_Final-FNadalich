@@ -1,6 +1,6 @@
 {
-  "description": "Documentacion API",
-  "name": "documentacionapi-fnadalich",
+  "description": "PROYECTO FINAL",
+  "name": "proyectofinal-fnadalich",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "dotenv": "^16.4.5",
-    "nodemon": "^3.1.0"
+    "nodemon": "^3.1.4"
   },
   "keywords": []
 }

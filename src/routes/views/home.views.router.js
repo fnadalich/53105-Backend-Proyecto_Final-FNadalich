@@ -3,6 +3,6 @@ const router = express.Router()
 const ViewController = require("../../controllers/view.controller.js")
 const viewController = new ViewController
 
-router.get("/:pid", viewController.productDetail)
+router.get("/", viewController.home)
 
 module.exports = router

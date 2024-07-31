@@ -247,7 +247,7 @@
     margin: 0.3rem;
   }
   
-  .loginForm, .registerForm, .userProfile {
+  .loginForm, .registerForm, .userProfile, .failed, .formRequestPasswordReset, .formResetPassword, .updateDocuments {
     display: flex;
     flex-direction: column;
     width: 25%;
@@ -261,7 +261,7 @@
     align-self: center;
   }
   
-  .loginForm a, .registerForm a {
+  .loginForm a, .registerForm a, .failed a {
     border-bottom: 1px solid;
     padding: 0 0.5rem;
   }
