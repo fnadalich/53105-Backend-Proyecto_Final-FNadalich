@@ -57,8 +57,8 @@ const renderProducts = (products) => {
     card.className = "card"
 
     const images = prod.thumbnail && prod.thumbnail.length > 0
-      ? prod.thumbnail.map(imgSrc => `<img src="${imgSrc}" alt="${prod.title}">`).join('')
-      : '<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLhZ20NCp7B8aXMv9r7CVxomuhhoPVyT3AcJceeVqmoASVe4m8U6d-mgd0YJWQqfbdfOU&usqp=CAU" alt="No Image">'
+      ? prod.thumbnail.map(imgSrc => `<img src="${imgSrc}" alt="${prod.title}">`).join("")
+      : `<img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.fVw9JodzxGszcW51PEDnoAAAAA%26pid%3DApi&f=1&ipt=728f1607c998e79909475d842d8f820e0fccfb7473a337951a49e845a158e7bf&ipo=images" alt="No Image">`
 
     card.innerHTML = `
       <div class="images" >

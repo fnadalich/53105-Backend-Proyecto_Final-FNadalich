@@ -9,7 +9,7 @@ const UserRepository = require("../src/repository/userRepository.js")
 
 describe("Testing User", () => {
   before(() => {
-    mongoose.connect(`mongodb+srv://${USER_MONGO}:${PASSWORD_MONGO}@cluster0.ud53fbh.mongodb.net/${DB_MONGO}?retryWrites=true&w=majority&appName=Cluster0`)
+    mongoose.connect(`srv://${USER_MONGO}:${PASSWORD_MONGO}@cluster0.ud53fbh.mongodb.net/${DB_MONGO}?retryWrites=true&w=majority&appName=Cluster0`)
     this.userRepository = new UserRepository()
   })
 

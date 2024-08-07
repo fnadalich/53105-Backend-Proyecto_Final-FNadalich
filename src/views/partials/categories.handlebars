@@ -1,0 +1,21 @@
+<div class="categories">
+  <a href="/products?query=señuelos">SEÑUELOS</a>
+  <a href="/products?query=reeles">REELES</a>
+  <a href="/products?query=cañas">CAÑAS</a>
+  <a href="/products?query=bogueros">BOGUEROS</a>
+  <a href="/products?query=carpas">CARPAS</a>
+  <a href="/products?query=plomadas">PLOMADAS</a>
+</div>
+<div class="sort">
+  <a href="/products?{{#if query}}query={{query}}&{{/if}}{{#if limit}}limit={{limit}}&{{/if}}sort=price">Lower price</a>
+  <a href="/products?{{#if query}}query={{query}}&{{/if}}{{#if limit}}limit={{limit}}&{{/if}}sort=-price">Higher price</a>
+</div>
+<div class="limit">
+  <h3>Products per page</h3>
+  <div>
+    <a href="/products?{{#if query}}query={{query}}&{{/if}}limit=5">5</a>
+    <a href="/products?{{#if query}}query={{query}}&{{/if}}limit=10">10</a>
+    <a href="/products?{{#if query}}query={{query}}&{{/if}}limit=15">15</a>
+    <a href="/products?{{#if query}}query={{query}}&{{/if}}limit=20">20</a>
+  </div>
+</div>

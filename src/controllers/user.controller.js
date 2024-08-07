@@ -24,7 +24,10 @@ class UserController {
 
       res.redirect("/user/profile")
     } catch (error) {
-      res.send(error)
+      if(error.message === "Email already exists"){
+      return  res.render("failedRegister")
+      }
+      res.send("Internal server error")
     }
   }
 
@@ -45,7 +48,10 @@ class UserController {
       res.redirect("/user/profile")
 
     } catch (error) {
-      res.send(error.message)
+      if(error.message === "User not exist" || error.message === "Invalid password") {
+      return res.render("failedLogin")
+      }
+      res.send("Internal server error")
     }
   }
 
@@ -89,10 +95,10 @@ class UserController {
       user.resetToken = {
         token: token,
         expiresAt: new Date(Date.now() + 3600000)
-      };
+      }
       await user.save()
 
-      await emailService.sendMailResetPassword(email, user.first_name, token);
+      await emailService.sendMailResetPassword(email, user.first_name, token)
 
       res.redirect("/user/confirmationsend")
     } catch (error) {
@@ -114,16 +120,16 @@ class UserController {
 
       const resetToken = user.resetToken
       if (!resetToken || resetToken.token !== token) {
-        return res.render("resetpassword", { user: "", error: "Invalid token reset" });
+        return res.render("resetpassword", { user: "", error: "Invalid token reset" })
       }
 
-      const now = new Date();
+      const now = new Date()
       if (now > resetToken.expiresAt) {
-        return res.render("resetpassword", { user: "", error: "Token expired" });
+        return res.render("resetpassword", { user: "", error: "Token expired" })
       }
 
       if (await isValidPassword(password, user)) {
-        return res.render("resetpassword", { user: "", error: "The new password cannot be the same as the current password" });
+        return res.render("resetpassword", { user: "", error: "The new password cannot be the same as the current password" })
       }
 
 
@@ -131,10 +137,10 @@ class UserController {
       user.resetToken = undefined
       await user.save()
 
-      return res.redirect("/user/login");
+      return res.redirect("/user/login")
     } catch (error) {
-      console.error(error);
-      return res.status(500).render("passwordreset", { error: "Internal server error" });
+      console.error(error)
+      return res.status(500).render("resetpassword", { error: "Internal server error" })
     }
   }
 
@@ -179,18 +185,20 @@ class UserController {
       const user = await userRepository.getUser({ _id: uid })
 
       if (!user) {
-        return res.status(404).json({status: "error", message: "User not found" })
+        return res.status(404).json({ status: "error", message: "User not found" })
       }
 
       if (uploadedDocuments) {
         if (uploadedDocuments.document) {
-          user.documents = user.documents.concat(uploadedDocuments.document.map(doc => {
-            const fileNameWithoutExt = doc.originalname.split('.').slice(0, -1).join('.')
-            return {
+          const documentMap = new Map(user.documents.map(doc => [doc.name, doc]));
+          uploadedDocuments.document.forEach(doc => {
+            const fileNameWithoutExt = doc.originalname.split(".").slice(0, -1).join(".")
+            documentMap.set(fileNameWithoutExt, {
               name: fileNameWithoutExt,
               reference: doc.path
-            }
-          }))
+            })
+          })
+          user.documents = Array.from(documentMap.values())
         }
 
         if (uploadedDocuments.products) {
@@ -210,12 +218,38 @@ class UserController {
 
       await user.save()
 
-      res.status(200).json({status: "success", message: "Documents uploaded successfully"})
+      res.status(200).json({ status: "success", message: "Documents uploaded successfully" })
     } catch (error) {
-      console.log(error);
-      res.status(500).json({status:"error", message: "Internal server error" })
+      console.log(error)
+      res.status(500).json({ status: "error", message: "Internal server error" })
     }
 
+  }
+
+  async deleteUser(req, res) {
+    const {uid} = req.params
+    try {
+      const user = await userRepository.deleteUser(uid)
+
+      if (!user) {
+        return res.status(404).json({ status: "error", message: "User not found" })
+      }
+      res.status(200).json({ status: "success", message: "User deleted successfully" })
+    } catch (error) {
+      res.status(500).json({ status: "error", message: "Internal server error" })
+    }
+  }
+
+  async deletDisconnectedUsers(req, res) {
+    try {
+      const result = await userRepository.deletDisconnectedUsers()
+      if(result.deletedCount === 0) {
+        return res.status(404).json({ status: "error", message: "Users not found" })
+      }
+      res.status(200).json({ status: "success", message: `${result.deletedCount} users deleted successfully` })
+    } catch (error) {
+      res.status(500).json({ status: "error", message: `Internal server error` })
+    }
   }
 
 }

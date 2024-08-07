@@ -1,0 +1,15 @@
+{{>navBar}}
+
+<h1>DELETE USERS</h1>
+<div class="userToDelete">
+<h3>Users who have been disconnected for more than two days.</h3>
+  {{#each usersToDelete}}
+  {{> cardUser}}
+  {{/each}}
+  
+    <button class="deleteAllUsers">Delete all users</button>
+  
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="js/deleteUsers.js"></script>

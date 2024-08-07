@@ -1,0 +1,14 @@
+<div class="cardCart" id={{product._id}}>
+  {{!-- {{#if product.thumbnail.length}}
+      <img src={{product.thumbnail[0]}} alt={{title}}>
+  {{else}} --}}
+    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.fVw9JodzxGszcW51PEDnoAAAAA%26pid%3DApi&f=1&ipt=728f1607c998e79909475d842d8f820e0fccfb7473a337951a49e845a158e7bf&ipo=images" alt="no image available">
+  {{!-- {{/if}} --}}
+  <h3>{{product.title}}</h3>
+  <p>Price: $<span class="price">{{product.price}}</span></p>
+  {{!-- <p>Quantity: <span class="quantity">{{quantity}}</span></p> --}}
+  <p>Quantity: <input type="number" class="quantity" value={{quantity}} name={{_id}}></p>
+  <p>Subtotal: $<span class="subTotal"></span></p>
+  <button class="delete">Delete</button>
+</div>
+

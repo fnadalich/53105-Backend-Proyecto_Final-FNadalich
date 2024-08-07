@@ -10,7 +10,7 @@ class UserRepository {
       const userExist = await UserModel.findOne({ email: user.email })
 
       if (userExist) {
-        throw new Error(`Email ${user.email} is already in use`)
+        throw new Error(`Email already exists`)
       }
 
       const newCart = await cartRepository.addCart()
@@ -49,10 +49,10 @@ class UserRepository {
 
   async userValidPassword(email, password) {
     try {
-      const user = await UserModel.findOne({ email });
+      const user = await UserModel.findOne({ email })
       if (!user) {
         throw new Error("User not exist")
-      } 
+      }
       const isValid = await isValidPassword(password, user)
       if (!isValid) {
         throw new Error("Invalid password")
@@ -81,6 +81,52 @@ class UserRepository {
       if (!user) {
         throw new Error("The role could not be changed.")
       }
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async deleteUser(uid) {
+    try {
+      const user = await UserModel.findByIdAndDelete(uid)
+      if (!user) {
+        throw new Error(`User not found`)
+      }
+      return user
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async getDisconnectedUsers() {
+    const twoDaysAgo = new Date()
+    twoDaysAgo.setDate(twoDaysAgo.getDate() - 2)
+    try {
+      const result = await UserModel.find({
+        role: "user",
+        last_connection: { $lte: twoDaysAgo }
+      })
+      if(!result) {
+        throw new Error("No users to delete")
+      }
+      return result
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async deletDisconnectedUsers() {
+    const twoDaysAgo = new Date()
+    twoDaysAgo.setDate(twoDaysAgo.getDate() - 2)
+    try {
+      const result = await UserModel.deleteMany({
+        role: "user",
+        last_connection: { $lte: twoDaysAgo }
+      })
+      if(!result) {
+        throw new Error("No users to delete")
+      }
+      return result
     } catch (error) {
       throw error
     }

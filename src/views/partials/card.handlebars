@@ -1,0 +1,15 @@
+<div class="card" id={{_id}}>
+  {{#if thumbnail.length}}
+    {{#each thumbnail}}
+      <img src={{this}} alt={{title}}>
+    {{/each}}
+  {{else}}
+    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.fVw9JodzxGszcW51PEDnoAAAAA%26pid%3DApi&f=1&ipt=728f1607c998e79909475d842d8f820e0fccfb7473a337951a49e845a158e7bf&ipo=images" alt="no image available">
+  {{/if}}
+  <h3>{{title}}</h3>
+  <p>Category: {{category}} </p>
+  <p>Price: ${{price}}</p>
+  <p>Description: {{description}} </p>
+  <a href="/product/{{_id}}"><button>Detail</button></a>
+  <button class="addCart">Add to cart</button>
+</div>

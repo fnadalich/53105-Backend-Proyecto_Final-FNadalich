@@ -6,8 +6,8 @@ class EmailService {
             service: 'gmail',
             port: 587,
             auth: {
-                user: "lucaspablolabruna@gmail.com",
-                pass: "ocqd quut msrg mbyo"
+                user: "fernandonadalich@gmail.com",
+                pass: "sakg tpch vroq qchq"
             }
         })
     }
@@ -15,12 +15,12 @@ class EmailService {
     async sendEmailPurchase(email, first_name, ticket) {
         try {
             const mailOptions = {
-                from: "E-commerce <lucaspablolabruna@gmail.com>",
+                from: "E-commerce <fernandonadalich@gmail.com>",
                 to: email,
                 subject: 'Confirmación de compra',
                 html: `
                     <h1>Confirmación de compra</h1>
-                    <p>Gracias por tu compra, ${first_name}!</p>
+                    <p>Gracias por tu compra pescador, ${first_name}!</p>
                     <p>El número de tu orden es: ${ticket}</p>
                 `
             }
@@ -34,7 +34,7 @@ class EmailService {
     async sendMailResetPassword(email, first_name, token) {
         try {
             const mailOptions = {
-                from: 'E-commerce <lucaspablolabruna@gmail.com>',
+                from: 'E-commerce <fernandonadalich@gmail.com>',
                 to: email,
                 subject: 'Restablecimiento de Contraseña',
                 html: `
